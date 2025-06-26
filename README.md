@@ -10,14 +10,14 @@ This is a full-stack web application that scrapes restaurant data and displays i
 
 1. **Install dependencies:**
 
-   ```bash
-   pip install -r requirements.txt
-
+```bash
+pip install -r requirements.txt
+```
 2. **Run the backend:**
-
-  ```bash
-  uvicorn main:app --reload
-  ```
+   
+```bash
+uvicorn main:app --reload
+```
 
 **Frontend (React + MUI)**
 Navigate to the frontend folder:
@@ -37,8 +37,8 @@ The app will be available at http://localhost:3000
 
 🧠 Approach
 Web Scraping:
-  Restaurant data is scraped using Selenium and undetected-chromedriver to avoid bot detection.
-  Scraper targets RestaurantGuru or Zomato and collects fields like name, rating, price, cuisine, image URL, and delivery time.
+  Restaurant data is scraped using BeautifulSoup.
+  Scraper targets RestaurantGuru (https://restaurant-guru.in/Kolhapur) and collects fields like name, rating, cuisine.
 
 Backend (FastAPI):
   Provides an API endpoint /restaurants that returns the scraped data as JSON. This is consumed by the frontend.
