@@ -16,11 +16,11 @@ def scrape_restaurantguru_data():
             name_tag = card.select_one("h3.item__title")
             name = name_tag.text.strip() if name_tag else "N/A"
 
-            # Extract cuisine/category
+            # Extract cuisine
             category_tag = card.select_one("span.grey span")
             cuisine = category_tag.text.strip() if category_tag else "N/A"
 
-            # Extract rating width from CSS
+            # Extract rating 
             rating_fill = card.select_one("div.rating-stars__fill")
             rating = "N/A"
 
@@ -28,7 +28,7 @@ def scrape_restaurantguru_data():
                 style = rating_fill["style"]
                 if "width" in style:
                     width_value = style.split("width:")[1].split("%")[0].strip()
-                    rating = round(float(width_value) * 0.05, 1)  # Convert % to 5-star scale
+                    rating = round(float(width_value) * 0.05, 1)  
 
             restaurants.append({
                 "name": name,
