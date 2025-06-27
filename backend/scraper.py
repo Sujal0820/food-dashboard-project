@@ -28,7 +28,7 @@ def scrape_restaurantguru_data():
                 style = rating_fill["style"]
                 if "width" in style:
                     width_value = style.split("width:")[1].split("%")[0].strip()
-                    rating = round(float(width_value) * 0.05, 1)  # Convert % to 5-star scale
+                    rating = round(float(width_value) * 0.05, 1)  
 
             restaurants.append({
                 "name": name,
