@@ -8,6 +8,10 @@ env:
 jobs:
     new_job:
       runs-on: ubuntu-latest
+      env:
+        JOB_SCOPE: JAMSANDEKAR
       steps:
         - name: Demo
-          run: echo "Hello"
+          env:
+            STEP_SCOPE: IRELAND
+          run: echo "Hello ${MY_NAME} ${JOB_SCOPE}, ${STEP_SCOPE}"
