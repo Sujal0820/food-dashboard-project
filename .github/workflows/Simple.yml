@@ -1,10 +1,35 @@
 name: New Variable Workflow
 
-on: workflow_dispatch
+on: 
+  workflow_dispatch:
+  #Input Variables
+    inputs:
+      age:
+        description: "Enter Your Age"
+        default: "50"
+        required: true  
+
+#Global variable
+env:
+  NAME: Sujal
 
 jobs:
   new_job:
     runs-on: ubuntu-latest
+
+    #Job Scope
+    env:
+      SURNAME: Jamsandekar
     steps:
-      - name: ONLY HELLO
-        run: echo "Hello from SUJAL"
+      - name: All Variables
+        #Step Scope
+        env:
+          COMPANY: Github
+
+          #Context Variable and configuration variables
+        run: echo "Hello from ${NAME} ${SURNAME} from ${COMPANY}. You are ${{github.actor}} user. Your age is ${{inputs.age}}. Here is your student id ${{vars.STUDENT_ID}} and password is ${{secrets.PASSWORD}} "
+
+
+
+
+
