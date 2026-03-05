@@ -1,0 +1,10 @@
+name: New Variable Workflow
+
+on: workflow_dispatch
+
+jobs:
+  new_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ONLY HELLO
+        run: echo "Hello from SUJAL"
