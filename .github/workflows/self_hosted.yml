@@ -1,4 +1,4 @@
-name: New Variable Workflow
+name: Seif-hosted Workflow
 
 on: 
   workflow_dispatch:
