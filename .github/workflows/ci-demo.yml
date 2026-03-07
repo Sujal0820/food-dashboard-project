@@ -1,0 +1,24 @@
+name: CI Demo
+
+on: workflow_dispatch
+
+jobs:
+  ci-jobs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Show Current Dir
+        run: pwd
+
+      - name: List files
+        run: ls -la
+
+      - name: Run Multiple Commands
+        run: |
+             echo "Starting CI Pipeline"
+             echo "Installing Dependencies"
+             echo "Running Tests"
+             echo "Build Complete"
+             
