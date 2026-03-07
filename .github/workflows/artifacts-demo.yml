@@ -1,0 +1,23 @@
+name: Artifacts Demo
+
+on: workflow_dispatch
+
+jobs:
+  artifact-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkou@v4
+
+      - name: Create Build File
+        run: |
+          mkdir build
+          echo "Build Output" > build/output.txt
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifact
+          path: build/
+    
