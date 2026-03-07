@@ -1,0 +1,13 @@
+name: Checkout Repository
+
+on: workflow_dispatch
+
+jobs:
+  checkout-demo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: List Repo Files
+        run: ls -la
