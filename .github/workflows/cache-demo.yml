@@ -19,5 +19,5 @@ jobs:
       - name: Create file
         run: |
             mkdir -p cache-folder
-            echo "Hello from Cache" > cache-folder/file/txt
+            echo "Hello from Cache" > cache-folder/file.txt
             cat cache-folder/file.txt
