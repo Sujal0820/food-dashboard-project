@@ -1,0 +1,23 @@
+name: Cache Demo
+
+on: workflow_dispatch
+
+jobs:
+  cache-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Cache Example
+        uses: action/cache@v4
+        with:
+          path: cache-folder
+          key: demo-cache
+
+      - name: Create file
+        run: |
+            mkdir -p cache-folder
+            echo "Hello from Cache" > cache-folder/file/txt
+            cat cache-folder/file.txt
