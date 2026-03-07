@@ -8,7 +8,7 @@ jobs:
 
     steps:
       - name: Checkout Repo
-        uses: actions/checkou@v4
+        uses: actions/checkout@v4
 
       - name: Create Build File
         run: |
