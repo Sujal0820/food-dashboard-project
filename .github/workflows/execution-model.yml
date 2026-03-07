@@ -1,0 +1,21 @@
+name: Execution Model
+
+on: workflow_dispatch
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Step 1
+        run: echo "This is Step 1 from Job 1"
+
+      - name: Step 2
+        run: echo "This is Step 2 from Job 1"
+  job2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Step 1
+        run: echo "This is Step 1 from Job 2"
+
+      - name: Step 2
+        run: echo "This is Step 2 from Job 2"
