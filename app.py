@@ -1,1 +1,5 @@
-print("Hello form CI/CD Pipeline")
+import time
+
+while True:
+    print("Hello from CI/CD pipeline")
+    time.sleep(10)
