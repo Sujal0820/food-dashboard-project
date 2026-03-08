@@ -6,6 +6,9 @@ on:
       username: 
         required: true
         type: string
+    secrets:
+      my_secret: 
+        required: true
 
 jobs:
   reusable-job:
@@ -14,3 +17,5 @@ jobs:
     steps:
       - name: Print Username
         run: echo "Hello from ${{inputs.username}}"
+      - name: Use Secret
+        run: echo "Secret Recevied"
