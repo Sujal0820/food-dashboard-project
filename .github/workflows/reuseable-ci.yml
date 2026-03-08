@@ -1,0 +1,11 @@
+name: Reusable CI
+
+on: workflow_call
+
+jobs:
+  reusable-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Say Hello
+        run: echo "Hello from REUSABLE Workflow"
