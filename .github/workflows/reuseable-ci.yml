@@ -1,6 +1,7 @@
 name: Reusable CI
 
-on: workflow_call
+on:
+  workflow_call:
 
 jobs:
   reusable-job:
@@ -8,4 +9,4 @@ jobs:
 
     steps:
       - name: Say Hello
-        run: echo "Hello from REUSABLE Workflow"
+        run: echo "Hello from reusable workflow"
