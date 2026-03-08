@@ -1,1 +1,1 @@
-Print("Hello form CI/CD Pipeline")
+print("Hello form CI/CD Pipeline")
