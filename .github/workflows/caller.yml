@@ -7,3 +7,5 @@ jobs:
     uses: ./.github/workflows/reuseable-ci.yml
     with:
       username: Sujal
+    secrets:
+      my_secret: ${{secrets.GITHUB_TOKEN}}
