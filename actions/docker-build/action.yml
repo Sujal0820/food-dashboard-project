@@ -1,0 +1,33 @@
+name: Docker Build and Push
+description: Build and push docker image
+
+inputs:
+  username:
+    required: true
+  password:
+    required: true
+  image:
+    required: true
+  tag:
+    required: true
+
+runs:
+  using: composite
+
+  steps:
+
+    - name: Docker Login
+      uses: docker/login-action@v3
+      with:
+        username: ${{ inputs.username }}
+        password: ${{ inputs.password }}
+
+    - name: Build Image
+      shell: bash
+      run: |
+        docker build -t ${{ inputs.image }}:${{ inputs.tag }} .
+
+    - name: Push Image
+      shell: bash
+      run: |
+        docker push ${{ inputs.image }}:${{ inputs.tag }}
