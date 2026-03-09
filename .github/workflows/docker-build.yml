@@ -1,9 +1,6 @@
 name: Docker CI pipeline
 
-on:
-  push:
-    branches:
-      - master
+on: workflow_dispatch
 
 jobs:
   build-and-push:
