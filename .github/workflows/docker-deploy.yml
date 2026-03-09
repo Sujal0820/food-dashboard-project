@@ -5,9 +5,17 @@ on:
     branches:
       - master
 
+concurrency:
+  group: production-deploy
+  cancel-in-progress: true
+
 jobs:
+
   build-and-push:
     runs-on: ubuntu-latest
+
+    outputs:
+      image_tag: ${{ steps.build.outputs.tag }}
 
     steps:
       - uses: actions/checkout@v4
@@ -15,22 +23,28 @@ jobs:
       - name: Docker Login
         uses: docker/login-action@v3
         with:
-          username: ${{secrets.DOCKER_USERNAME}}
-          password: ${{secrets.DOCKER_PASSWORD}}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build Image
+      - name: Build Docker Image
+        id: build
         run: |
-          docker build -t ${{secrets.DOCKER_USERNAME}}/github-actions-learning:latest .
+          TAG=${{ github.sha }}
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
 
-      - name: Push Image
+          docker build \
+          -t ${{ secrets.DOCKER_USERNAME }}/github-actions-learning:latest \
+          -t ${{ secrets.DOCKER_USERNAME }}/github-actions-learning:$TAG .
+
+      - name: Push Images
         run: |
-          docker push ${{secrets.DOCKER_USERNAME}}/github-actions-learning:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/github-actions-learning:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/github-actions-learning:${{ steps.build.outputs.tag }}
 
   deploy:
     needs: build-and-push
     runs-on: ubuntu-latest
     environment: production
-
 
     steps:
       - name: Deploy to EC2 Instance
@@ -40,17 +54,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            docker push ${{secrets.DOCKER_USERNAME}}/github-actions-learning:latest
+            docker pull ${{ secrets.DOCKER_USERNAME }}/github-actions-learning:${{ needs.build-and-push.outputs.image_tag }}
             docker stop app || true
             docker rm app || true
-            docker run -d --name app -p 80:5000 ${{secrets.DOCKER_USERNAME}}/github-actions-learning:latest
-
-
-
-
-
-
-
-
-    
-          
+            docker run -d --name app -p 80:5000 ${{ secrets.DOCKER_USERNAME }}/github-actions-learning:${{ needs.build-and-push.outputs.image_tag }}
