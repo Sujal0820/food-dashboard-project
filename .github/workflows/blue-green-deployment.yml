@@ -14,10 +14,13 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            IMAGE=${{secrets.USERNAME}}/github-actions-learning:latest
+            IMAGE=${{ secrets.DOCKER_USERNAME }}/github-actions-learning:latest
+      
+            echo "Using image: $IMAGE"
+      
             docker pull $IMAGE
-
-            if docker ps --format '{{.Names}}' | grep blue; then
+      
+            if docker ps --format '{{.Names}}' | grep -q blue; then
                 NEW=green
                 OLD=blue
                 PORT=5001
@@ -26,12 +29,12 @@ jobs:
                 OLD=green
                 PORT=5000
             fi
-
+      
             docker run -d --name $NEW -p $PORT:5000 $IMAGE
-
-            sleep 10
-
-            if docker ps | grep $NEW; then
+      
+            sleep 5
+      
+            if docker ps --format '{{.Names}}' | grep -q $NEW; then
                 docker stop $OLD || true
                 docker rm $OLD || true
                 echo "Deployment switched to $NEW"
@@ -41,8 +44,3 @@ jobs:
                 echo "Deployment failed"
                 exit 1
             fi
-
-
-
-
-            
