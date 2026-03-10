@@ -1,0 +1,48 @@
+name: Blue-Green Deployment
+
+on: workflow_dispatch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy Blue Green
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            IMAGE=${{secrets.USERNAME}}/github-actions-learning:latest
+            docker pull $IMAGE
+
+            if docker ps --format '{{.Names}}' | grep blue; then
+                NEW=green
+                OLD=blue
+                PORT=5001
+            else
+                NEW=blue
+                OLD=green
+                PORT=5000
+            fi
+
+            docker run -d --name $NEW -p $PORT:5000 $IMAGE
+
+            sleep 10
+
+            if docker ps | grep $NEW; then
+                docker stop $OLD || true
+                docker rm $OLD || true
+                echo "Deployment switched to $NEW"
+            else
+                docker logs $NEW
+                docker rm $NEW
+                echo "Deployment failed"
+                exit 1
+            fi
+
+
+
+
+            
