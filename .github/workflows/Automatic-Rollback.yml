@@ -1,0 +1,57 @@
+name: CI CD Pipeline
+
+on:
+  push:
+    branches:
+      - master
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: true
+
+jobs:
+
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    outputs:
+      image_tag: ${{ github.sha }}
+
+    steps:
+      - uses: actions/checkout@v4
+          
+      - name: Build and Push Docker
+        uses: ./actions/docker-build
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          image: ${{ secrets.DOCKER_USERNAME }}/github-actions-learning
+          tag: ${{ github.sha }}
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Deploy to EC2 Instance
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+           script: |
+            IMAGE=${{ secrets.DOCKER_USERNAME }}/github-actions-learning:${{ needs.build-and-push.outputs.image_tag }}
+            docker pull $IMAGE
+            docker run -d --name new_app -p 5001:5000 $IMAGE
+            sleep 10
+            if docker ps | grep new_app; then
+              docker stop app || true
+              docker rm app || true
+              docker rename new_app app
+            else
+              docker logs new_app
+              docker rm new_app
+              exit 1
+            fi
