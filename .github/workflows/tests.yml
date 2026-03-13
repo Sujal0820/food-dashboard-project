@@ -4,13 +4,13 @@ on:
   push:
     branches:
       - master
-    pull-request:
+  pull_request: 
 
-job: 
+jobs: 
   run_tests:
     runs-on: ubuntu-latest
 
-    step:
+    steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
 
